@@ -4,14 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Category extends Model
+class City extends Model
 {
     protected $guarded = [];
-
-    public function animal(): HasMany
+    public function news(): HasMany
     {
-        return $this->hasMany(Animal::class);
+        return $this->hasMany(News::class);
     }
 }
