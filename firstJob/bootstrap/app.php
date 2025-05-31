@@ -11,15 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withExceptions(function (Exceptions $exceptions) {
-    $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-        if ($request->is('api/*')) {
-            return response()->json([
-                'message' => 'Not found.'
-            ], 404);
-        }
-    });
-    })
     ->withMiddleware(function (Middleware $middleware) {
         //
     })

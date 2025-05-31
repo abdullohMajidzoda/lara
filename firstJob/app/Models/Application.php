@@ -13,9 +13,9 @@ class Application extends Model
         return $this->belongsTo(Position::class);
     }
 
-    public function client(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(User::class);
     }
 
     protected $guarded = [];

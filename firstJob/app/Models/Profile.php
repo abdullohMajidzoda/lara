@@ -10,7 +10,7 @@ class Profile extends Model
 
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(User::class);
     }
 
     protected $guarded = [];

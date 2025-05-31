@@ -7,6 +7,7 @@ use App\Models\Position;
 use App\Http\Requests\StorePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
 use App\Http\Resources\V1\PositionResource;
+use Illuminate\Support\Facades\Gate;
 
 class PositionController extends Controller
 {
@@ -39,6 +40,7 @@ class PositionController extends Controller
      */
     public function update(UpdatePositionRequest $request, Position $position)
     {
+        Gate::authorize('update-position');
         $position->update($request->all());
         return new PositionResource($position);
     }

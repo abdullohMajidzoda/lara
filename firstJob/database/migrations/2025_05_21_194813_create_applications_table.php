@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Client;
+use App\Models\User;
 use App\Models\Position;
 
 return new class extends Migration
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Position::class, 'position_id');
-            $table->foreignIdFor(Client::class, 'client_id');
+            $table->foreignIdFor(User::class, 'user_id');
             $table->string('cover_letter');
             $table->enum('status', ['pending', 'accepted', 'rejected']);
             $table->timestamps();

@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +24,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('api', function (Request $request) {
+        return Limit::perMinute(3)->by($request->user()?->id ?: $request->ip())->response(function(Request $request, array $headers){
+            return response()->json([
+                'message' => 'Too Many Attempts'
+            ], 429);
+        });
+        });
+
+        Gate::define('update-position', function(User $user){
+            return $user->role == 'employer';
+        });
+
     }
 }

@@ -24,7 +24,7 @@ class StoreApplicationRequest extends FormRequest
     {
         return [
             'position_id' => ['required', 'exists:positions,id'],
-            'client_id' => ['required', 'exists:clients,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'cover_letter' => ['required', 'string'],
             'status' => ['required', Rule::in(['pending','accepted', 'rejected'])],
         ];

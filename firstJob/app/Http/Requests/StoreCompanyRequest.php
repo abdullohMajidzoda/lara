@@ -22,7 +22,7 @@ class StoreCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => ['required', 'exists:clients,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
             'website' => ['required', 'string'],            

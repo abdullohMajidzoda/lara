@@ -19,6 +19,34 @@ class ApplicationController extends Controller
         return ApplicationResource::collection(Application::all());
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Application $application)
+    {
+        return new ApplicationResource($application);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateApplicationRequest $request, Application $application)
+    {
+        $application->update($request->all());
+        return new ApplicationResource($application);
+    }
+
+     /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Application $application)
+    {
+        $application->delete();
+        return response()->json([
+            'message'=>'Position Deleted',
+        ]);
+    }
+
   
 
      public function apply(Position $position, StoreApplicationRequest $request)

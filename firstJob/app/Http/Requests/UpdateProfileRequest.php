@@ -22,7 +22,7 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => ['required', 'exists:clients,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'phone' => ['required', 'string'],
             'bio' => ['required', 'string'],
             'location' => ['required', 'string'],

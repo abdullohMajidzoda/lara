@@ -18,7 +18,7 @@ class ApplicationResource extends JsonResource
         return [
             'id' => $this->id,
             'position_id' => $this->position_id,
-            'client_id' => $this->client_id,
+            'user_id' => $this->user_id,
             'cover_letter' => $this->cover_letter,
             'status' => $this->status,
             'created' => Carbon::parse($this->created_at)->format('d-m-Y H-i') ,
