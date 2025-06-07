@@ -8,15 +8,32 @@ use App\Http\Requests\StorePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
 use App\Http\Resources\V1\PositionResource;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\FilterRequest;
 
 class PositionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(FilterRequest $request)
     {
-        return PositionResource::collection(Position::all());
+        $data = $request->validated();
+        $query = Position::query();
+
+        if(isset($data['description'])){
+            $query->where('description', 'like', "%{$data['description']}%");
+        }
+
+        if(isset($data['location'])){
+            $query->where('location', 'like', "%{$data['location']}%");
+        }
+
+        if(isset($data['employment_type'])){
+            $query->where('employment_type', 'like', "%{$data['employment_type']}%");
+        }
+
+        $res = $query->get();
+        return PositionResource::collection($res);
     }
 
     /**
@@ -24,6 +41,11 @@ class PositionController extends Controller
      */
     public function store(StorePositionRequest $request)
     {
+        if(Gate::denies('create-position')){
+            return response()->json([
+                'message' => 'This route is not for you'
+            ], 403);
+        }
         return new PositionResource(Position::create($request->all()));
     }
 
@@ -40,8 +62,12 @@ class PositionController extends Controller
      */
     public function update(UpdatePositionRequest $request, Position $position)
     {
-        Gate::authorize('update-position');
         $position->update($request->all());
+        if(Gate::denies('update-position', $position)){
+            return response()->json([
+                'message' => 'This route is not for you'
+        ], 403);
+        }
         return new PositionResource($position);
     }
 
@@ -51,9 +77,15 @@ class PositionController extends Controller
     public function destroy(Position $position)
     {
         $position->delete();
+        if(Gate::denies('delete-position', $position)){
+            return response()->json([
+                'message' => 'This route is not for you'
+        ], 403);
+        }
+
         return response()->json([
             'message'=>'Position Deleted',
         ]);
-    }
 
+    }
 }

@@ -8,12 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginUserRequest;
+use App\Http\Resources\V1\UserResource;
 
 class AuthController extends Controller
 {
     public function register(StoreUserRequest $request)
     {
-        return User::create($request->all());
+        return new UserResource(User::create($request->all()));
     }
 
 
@@ -32,7 +33,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user-role,
+                // 'role' => $user-role,
             ],
             'token' => $user->createToken("token of {$user->name}")->plainTextToken,
         ]);
@@ -40,6 +41,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        return 'LOGOUT';
+        Auth::user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Token removed'
+        ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Http\Requests\StoreApplicationRequest;
 use App\Http\Requests\UpdateApplicationRequest;
 use App\Http\Resources\V1\ApplicationResource;
+use Illuminate\Support\Facades\Gate;
 
 class ApplicationController extends Controller
 {
@@ -16,6 +17,11 @@ class ApplicationController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('applications')){
+            return response()->json([
+                'message' => 'This route is not for you'
+        ], 403);
+        }
         return ApplicationResource::collection(Application::all());
     }
 
@@ -49,8 +55,13 @@ class ApplicationController extends Controller
 
   
 
-     public function apply(Position $position, StoreApplicationRequest $request)
+     public function apply(StoreApplicationRequest $request, Position $position)
     {
+        if(Gate::denies('apply', $position)){
+            return response()->json([
+                'message' => 'This route is not for you'
+        ], 403);
+        }
         return new ApplicationResource(Application::create($request->all()));
     }
 }
