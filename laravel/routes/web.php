@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\PracticeController;
 use App\helpers\CitySlug;
 
 // Route::get('/animal', [AnimalController::class, 'animal'])->name('animal.index');
@@ -31,3 +32,5 @@ Route::prefix(CitySlug::getSlug())->middleware('city')->group(function(){
     Route::patch('/news/{news}', [MainController::class, 'update_news'])->name('update_news');
     Route::delete('/news/{news}', [MainController::class, 'destroy_news'])->name('destroy_news');
 }); 
+
+Route::get('/practice', [PracticeController::class, 'index'])->name('practice');
